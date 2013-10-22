@@ -3,10 +3,12 @@
 <head>
   <title>MichaelMorrisseyDotMe</title>
   <%= stylesheet_link_tag    "application", media: "all", "data-turbolinks-track" => true %>
-  <%= javascript_include_tag "application", "data-turbolinks-track" => true %>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r58/three.min.js"></script>
   <%= csrf_meta_tags %>
 </head>
 <body>
+<script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r58/three.min.js"></script>
+<%= javascript_include_tag "application", "data-turbolinks-track" => true %>
 
 <%= yield %>
 

@@ -13,4 +13,10 @@
 //= require jquery
 //= require jquery_ujs
 //= require turbolinks
+//= require jquery
+//= require jquery_ujs
+//= require turbolinks
+//= require fullscreen.js
+//= require keyboard.js
+//= require window.js
 //= require_tree .
