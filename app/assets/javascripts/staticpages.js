@@ -14,13 +14,24 @@ var clock = new THREE.Clock();
 var sphere1;
 var globalSphere2;
 var globalSphere3;
+var globalSphere4;
+var globalSphere5;
 var sprite1;
 var sprite2;
+var sprite3;
+var sprite4;
+var mouse= {};
 // custom global variables
 var cube;
-
+var wireframeMaterial2 = new THREE.MeshBasicMaterial( { color: "white", wireframe: true, transparent: true } ); 
+var wireframeMaterial = new THREE.MeshBasicMaterial( { color: "#ffd700", wireframe: true, transparent: true } ); 
+var projector = new THREE.Projector();
+var raycaster = new THREE.Raycaster();
 init();
 animate();
+
+var STATE = {}
+
 
 // FUNCTIONS        
 function init() 
@@ -62,7 +73,7 @@ function init()
     var skyBox = new THREE.Mesh( skyBoxGeometry, skyBoxMaterial );
     skyBox.flipSided = true; // render faces from inside of the cube, instead of from outside (default).
     // scene.add(skyBox);
-    scene.fog = new THREE.FogExp2( 0x9999ff, 0.00025 );
+    scene.fog = new THREE.FogExp2( 'black', 0.00025 );
     
     ////////////
     // CUSTOM //
@@ -71,11 +82,10 @@ function init()
     var sphereGeom =  new THREE.SphereGeometry( 50, 16 , 16 );
     
     // Basic wireframe materials.
-    var wireframeMaterial = new THREE.MeshBasicMaterial( { color: "white", wireframe: true, transparent: true } ); 
-    
+   
         
     // Creating three spheres to illustrate wireframes.
-    var sphere = new THREE.Mesh( sphereGeom, wireframeMaterial );
+    var sphere = new THREE.Mesh( sphereGeom, wireframeMaterial2 );
     sphere.position.set(0, 50, 0);
     sphere1 = sphere;
     scene.add( sphere );
@@ -90,16 +100,36 @@ function init()
     sprite2 = spritey2
     scene.add(spritey2);
 
+    var spritey3 = makeTextSprite( "[images]",{ fontsize: 17, borderColor: {r:255, g:0, b:0, a:0}, backgroundColor: {r:255, g:100, b:100, a:0} } );
+    spritey3.position.set(0 , 0, 100);
+    sprite3 = spritey3;
+    scene.add(spritey3);
+
+    var spritey4 = makeTextSprite( "[about me]",{ fontsize: 17, borderColor: {r:255, g:0, b:0, a:0}, backgroundColor: {r:255, g:100, b:100, a:0} } );
+    spritey4.position.set(0 , 0, -100);
+    sprite4 = spritey4;
+    scene.add(spritey4);
+
     var sphereGeom2 = new THREE.SphereGeometry( 10, 8, 8);
-    var sphere2 = new THREE.Mesh(sphereGeom2, wireframeMaterial);
+    var sphere2 = new THREE.Mesh(sphereGeom2, wireframeMaterial2);
     sphere2.position.set(-100, 50, 0);
     globalSphere2 = sphere2;
     scene.add(sphere2);
 
-    var sphere3 = new THREE.Mesh(sphereGeom2, wireframeMaterial);
+    var sphere3 = new THREE.Mesh(sphereGeom2, wireframeMaterial2);
     sphere3.position.set(100, 50, 0);
     globalSphere3 = sphere3;
     scene.add(sphere3);
+
+    var sphere4 = new THREE.Mesh(sphereGeom2, wireframeMaterial2);
+    sphere4.position.set(0, 50, 100);
+    globalSphere4 = sphere4
+    scene.add(sphere4);
+
+    var sphere5 = new THREE.Mesh(sphereGeom2, wireframeMaterial2);
+    sphere5.position.set(0, 50, -100);
+    globalSphere5 = sphere5
+    scene.add(sphere5);
     
     // Create a sphere then put the wireframe over it.    
     
@@ -115,6 +145,7 @@ function init()
 function animate() 
 {
     requestAnimationFrame( animate );
+
     render();       
     update();
 }
@@ -200,10 +231,15 @@ function update()
     camera.position.x = 300 * Math.sin(Date.now()* 0.0003);
     camera.position.z = 300 * Math.cos(Date.now()* 0.0003);
     sphere1.position.y = 20 + 10 * Math.cos(Date.now()* 0.0005);
-    globalSphere2.position.y = (20 * Math.sin(Date.now()* 0.0006)) + 25;
-    sprite1.position.y = (20 * Math.sin(Date.now()* 0.0006))+ 12;
-    globalSphere3.position.y = (-20 * Math.sin(Date.now()* 0.0006)) +25;
-    sprite2.position.y = (-20 * Math.sin(Date.now()* 0.0006)) +12;
+    globalSphere2.position.y = (15 * Math.sin(Date.now()* 0.0006)) + 25;
+    sprite1.position.y = (15 * Math.sin(Date.now()* 0.0006))+ 12;
+    globalSphere3.position.y = (-15 * Math.sin(Date.now()* 0.0006)) +25;
+    sprite2.position.y = (-15 * Math.sin(Date.now()* 0.0006)) +12;
+    globalSphere4.position.y = (15 * Math.sin(Date.now()* 0.0006)) + 25;
+    sprite3.position.y = (15 * Math.sin(Date.now()* 0.0006)) +12;
+    globalSphere5.position.y = (-15 * Math.sin(Date.now()* 0.0006)) + 25;
+    sprite4.position.y = (-15 * Math.sin(Date.now()* 0.0006)) +12;
+
     
     controls.update();
 
@@ -211,7 +247,60 @@ function update()
 
 function render() 
 {
+
+
     renderer.render( scene, camera );
 }
+
+
+
+$(document).ready(function(){
+  $('.web').on("mouseout", function(){
+    globalSphere2.material = wireframeMaterial2;
+  });
+
+  $('.web').on("mouseover", function(){
+    globalSphere2.material = wireframeMaterial;
+  });
+
+});
+
+$(document).ready(function(){
+  $('.video').on("mouseout", function(){
+    globalSphere3.material = wireframeMaterial2;
+  });
+
+  $('.video').on("mouseover", function(){
+    globalSphere3.material = wireframeMaterial;
+  });
+
+});
+
+$(document).ready(function(){
+  $('.images').on("mouseout", function(){
+    globalSphere4.material = wireframeMaterial2;
+  });
+
+  $('.images').on("mouseover", function(){
+    globalSphere4.material = wireframeMaterial;
+  });
+
+});
+
+$(document).ready(function(){
+  $('.about-me').on("mouseout", function(){
+    globalSphere5.material = wireframeMaterial2;
+  });
+
+  $('.about-me').on("mouseover", function(){
+    globalSphere5.material = wireframeMaterial;
+  });
+
+});
+
+function onMouseMove( e ) {
+  mouse.x = e.clientX;
+  mouse.y = e.clientY;}
+
 
 

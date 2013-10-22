@@ -16,9 +16,48 @@ html
   position: absolute
   font-family: oswald
 
+.nav
+  position: absolute
+  z-index: 100
+  top: 0
+  left: 0
+  color: black
+  font-family: oswald
+  margin-top: 1em
+  width: 7em
+  cursor: pointer
+  div
+    border: solid 1px black
+    background-color: rgba(255,215,0, 1)
+    padding: 0.2em
+    padding-left: 1em
+    padding-right: 1em
+    &:hover
+      letter-spacing: 1.5px
+ 
+
+
+
 
 h1
   bottom: 70px
   font-size: 2.7em
+  &:hover
+    letter-spacing: 5px
 h2
   top: 10px
+  &:hover
+    letter-spacing: 5px
+
+h1, h2
+  -webkit-transition: all 1s ease-in-out
+  -moz-transition: all 1s ease-in-out
+  -o-transition: all 1s ease-in-out
+  transition: all 1s ease-in-out
+
+.nav div
+  -webkit-transition: all 0.7s ease-in-out
+  -moz-transition: all 0.7s ease-in-out
+  -o-transition: all 0.7s ease-in-out
+  transition: all 0.7s ease-in-out
+

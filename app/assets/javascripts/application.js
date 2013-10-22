@@ -19,4 +19,5 @@
 //= require fullscreen.js
 //= require keyboard.js
 //= require window.js
+//= requrie tween.min.js
 //= require_tree .
