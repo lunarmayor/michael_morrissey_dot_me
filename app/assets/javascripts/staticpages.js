@@ -28,11 +28,9 @@ var wireframeMaterial = new THREE.MeshBasicMaterial( { color: "#ffd700", wirefra
 var projector = new THREE.Projector();
 var raycaster = new THREE.Raycaster();
 init();
+var state = {current_page: "home", objects: {}};
+console.log(state);
 animate();
-
-var STATE = {}
-
-
 // FUNCTIONS        
 function init() 
 {
@@ -60,6 +58,7 @@ function init()
     // CONTROLS
     controls = new THREE.OrbitControls( camera, renderer.domElement );
     // STATS
+    //controls.userZoom = false;
 
 
     // LIGHT
@@ -105,7 +104,7 @@ function init()
     sprite3 = spritey3;
     scene.add(spritey3);
 
-    var spritey4 = makeTextSprite( "[about me]",{ fontsize: 17, borderColor: {r:255, g:0, b:0, a:0}, backgroundColor: {r:255, g:100, b:100, a:0} } );
+    var spritey4 = makeTextSprite( "[me]",{ fontsize: 17, borderColor: {r:255, g:0, b:0, a:0}, backgroundColor: {r:255, g:100, b:100, a:0} } );
     spritey4.position.set(0 , 0, -100);
     sprite4 = spritey4;
     scene.add(spritey4);
@@ -144,10 +143,15 @@ function init()
 
 function animate() 
 {
-    requestAnimationFrame( animate );
+    if(state.current_page === "home"){
+      requestAnimationFrame( animate );
+      render();       
+      update();
+    } else{
+        false;
+    }
+   
 
-    render();       
-    update();
 }
 
 function makeTextSprite( message, parameters )
@@ -247,8 +251,6 @@ function update()
 
 function render() 
 {
-
-
     renderer.render( scene, camera );
 }
 
@@ -301,6 +303,34 @@ $(document).ready(function(){
 function onMouseMove( e ) {
   mouse.x = e.clientX;
   mouse.y = e.clientY;}
+
+$(document).ready(function(){
+  $('h1').on("mouseout", function(){
+    sphere1.material = wireframeMaterial2;
+  });
+
+  $('h1').on("mouseover", function(){
+    sphere1.material = wireframeMaterial;
+  });
+
+});
+
+$(document).ready(function(){
+  $('.about-me').on("click", function(){
+    
+  });
+
+});
+
+
+//
+
+$(document).ready(function(){
+  $('.images').on("click", function(){
+    state.current_page = "images"
+  })
+})
+
 
 
 
