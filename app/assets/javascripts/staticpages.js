@@ -21,6 +21,7 @@ var sprite2;
 var sprite3;
 var sprite4;
 var mouse= {};
+var targetList = []
 // custom global variables
 var cube;
 var wireframeMaterial2 = new THREE.MeshBasicMaterial( { color: "white", wireframe: true, transparent: true } ); 
@@ -112,22 +113,29 @@ function init()
     var sphereGeom2 = new THREE.SphereGeometry( 10, 8, 8);
     var sphere2 = new THREE.Mesh(sphereGeom2, wireframeMaterial2);
     sphere2.position.set(-100, 50, 0);
+    targetList.push(sphere2);
     globalSphere2 = sphere2;
+
     scene.add(sphere2);
 
     var sphere3 = new THREE.Mesh(sphereGeom2, wireframeMaterial2);
     sphere3.position.set(100, 50, 0);
     globalSphere3 = sphere3;
+    targetList.push(sphere3);
     scene.add(sphere3);
 
     var sphere4 = new THREE.Mesh(sphereGeom2, wireframeMaterial2);
     sphere4.position.set(0, 50, 100);
     globalSphere4 = sphere4
+    targetList.push(sphere4);
+    sphere.position.needsUpdate = true;
+    sphere.geometry.dynamic = true;
     scene.add(sphere4);
 
     var sphere5 = new THREE.Mesh(sphereGeom2, wireframeMaterial2);
     sphere5.position.set(0, 50, -100);
-    globalSphere5 = sphere5
+    globalSphere5 = sphere5;
+    targetList.push(sphere4);
     scene.add(sphere5);
     
     // Create a sphere then put the wireframe over it.    
@@ -300,9 +308,42 @@ $(document).ready(function(){
 
 });
 
-function onMouseMove( e ) {
-  mouse.x = e.clientX;
-  mouse.y = e.clientY;}
+/*$(document).click(function( event ) {
+
+                event.preventDefault();
+
+                var vector = new THREE.Vector3( ( event.clientX / window.innerWidth ) * 2 - 1, - ( event.clientY / window.innerHeight ) * 2 + 1, 0.5 );
+                projector.unprojectVector( vector, camera );
+
+                var raycaster = new THREE.Raycaster( camera.position, vector.sub( camera.position ).normalize() );
+                var material = new THREE.LineBasicMaterial({color: "white"});
+                var geom = new THREE.Geometry();
+                geom.vertices.push(camera.position);
+                geom.vertices.push(vector.sub( camera.position ).normalize() );
+                line = new THREE.Line(geom, material);
+                scene.add(line);
+                
+                var intersects = raycaster.intersectObjects( targetList );
+                console.log(intersects);
+                if ( intersects.length > 0 ) {
+                    console.log(intersects);
+                    intersects[ 0 ].object.material = wireframeMaterial;
+
+                    var particle = new THREE.Sprite();
+                    particle.position = intersects[ 0 ].point;
+                    particle.scale.x = particle.scale.y = 8;
+                    scene.add( particle );
+                }
+
+                
+
+})*/
+   
+
+
+  
+    
+
 
 $(document).ready(function(){
   $('h1').on("mouseout", function(){
@@ -327,10 +368,239 @@ $(document).ready(function(){
 
 $(document).ready(function(){
   $('.images').on("click", function(){
-    state.current_page = "images"
+    state.current_page = "imagesTransition"
+    $( ".images" ).off();
+    $( ".web").off();
+    $(".about-me").off();
+    $(".video").off();
+
+    $('h2').text("[ images ]");
+
+    imagesTransition();
+    
   })
 })
 
+
+var imagesTransition = function(){
+  if(state.current_page === "imagesTransition"){
+    requestAnimationFrame( imagesTransition );
+    render();       
+    updateImagesTransition();
+  } else{
+    initImages();
+    imagesTransition2();
+
+  };
+
+
+};
+
+var spherePos = 100;
+var subtractedVal = -0.0035;
+
+
+var updateImagesTransition = function(){
+  if ((sprite1.material.opacity > 0) || (spherePos > 0)){
+    camera.position.x = 300 * Math.sin(Date.now()* 0.0003);
+    camera.position.z = 300 * Math.cos(Date.now()* 0.0003);
+    sphere1.position.y = 20 + 10 * Math.cos(Date.now()* 0.0005);
+    globalSphere2.position.y = (15 * Math.sin(Date.now()* 0.0006)) + 25;
+    sprite1.position.y = (15 * Math.sin(Date.now()* 0.0006))+ 12;
+    globalSphere3.position.y = (-15 * Math.sin(Date.now()* 0.0006)) +25;
+    sprite2.position.y = (-15 * Math.sin(Date.now()* 0.0006)) +12;
+    sprite3.position.y = (15 * Math.sin(Date.now()* 0.0006)) +12;
+    globalSphere5.position.y = (-15 * Math.sin(Date.now()* 0.0006)) + 25;
+    sprite4.position.y = (-15 * Math.sin(Date.now()* 0.0006)) +12;
+   
+
+   globalSphere2.material.opacity +=  subtractedVal;
+   globalSphere3.material.opacity +=  subtractedVal;
+   sprite1.material.opacity += subtractedVal * 2;
+   sprite2.material.opacity += subtractedVal * 2;
+   sprite3.material.opacity += subtractedVal * 2;
+   
+   sprite4.material.opacity += subtractedVal * 2;
+   if(sphere1.material.opacity < 0){
+     scene.remove(sphere1);
+   };
+
+   
+   globalSphere5.material.opacity +=  subtractedVal;
+   subtractedVal += 0.000001;
+   globalSphere4.position.z = spherePos;
+   globalSphere4.position.y += -0.2
+   
+   globalSphere4.scale.x += 0.01;
+   globalSphere4.scale.y += 0.01;
+   globalSphere4.scale.z += 0.01;
+
+   spherePos = spherePos - 0.5;
+   controls.update();
+
+  } else {
+    state.current_page = "imagesTransition2";
+    scene.remove(sphere1);
+    scene.remove(globalSphere2);
+    scene.remove(globalSphere3);
+    scene.remove(globalSphere5);
+
+  }
+}
+
+
+var imagesTransition2 = function(){
+  if(state.current_page === "imagesTransition2"){
+    requestAnimationFrame( imagesTransition2 );
+    render();       
+    updateImagesTransition2();
+  } else{
+    false;
+};
+};
+
+
+
+
+var initImages = function(){
+  $('#content').html("<a href='/assets/gallery9.jpg' data-lightbox = 'gallery'><img src= '/assets/gallery9.jpg'/></a><a href='/assets/gallery4.jpg' data-lightbox = 'gallery'><img src= '/assets/gallery4.jpg'/></a><a href='/assets/gallery10.png' data-lightbox = 'gallery'><img src= '/assets/gallery10.png' /></a><a href='/assets/gallery11.jpeg' data-lightbox = 'gallery'><img src= '/assets/gallery11.jpeg' /></a><a href='/assets/gallery13.jpeg' data-lightbox = 'gallery'><img src= '/assets/gallery13.jpeg'/></a><a href='/assets/gallery7.jpg' data-lightbox = 'gallery'><img src= '/assets/gallery7.jpg'/></a>");
+  setTimeout(function(){$('#content').animate({ opacity: 1 }, 2000 );
+  }, 200)
+}
+
+var updateImagesTransition2 = function(){
+  globalSphere4.rotation.y +=  1 * Math.PI / 200;
+  
+
+
+
+
+  controls.update();
+
+
+}
+
+
+//video
+
+
+
+$(document).ready(function(){
+  $('.video').on("click", function(){
+    state.current_page = "videoTransition"
+    $( ".images" ).off();
+    $( ".web").off();
+    $(".about-me").off();
+    $(".video").off();
+
+    $('h2').text("[ video ]");
+
+    videoTransition();
+    
+  })
+})
+
+
+var videoTransition = function(){
+  if(state.current_page === "videoTransition"){
+    requestAnimationFrame( videoTransition );
+    render();       
+    updateVideoTransition();
+  } else{
+    initVideo();
+    videoTransition2();
+
+  };
+
+
+};
+
+var spherePos = 100;
+var subtractedVal = -0.0035;
+
+
+var updateVideoTransition = function(){
+  if ((sprite1.material.opacity > 0) || (spherePos > 0)){
+    camera.position.x = 300 * Math.sin(Date.now()* 0.0003);
+    camera.position.z = 300 * Math.cos(Date.now()* 0.0003);
+    sphere1.position.y = 20 + 10 * Math.cos(Date.now()* 0.0005);
+    globalSphere2.position.y = (15 * Math.sin(Date.now()* 0.0006)) + 25;
+    sprite1.position.y = (15 * Math.sin(Date.now()* 0.0006))+ 12;
+    globalSphere4.position.y = (-15 * Math.sin(Date.now()* 0.0006)) +25;
+    sprite2.position.y = (-15 * Math.sin(Date.now()* 0.0006)) +12;
+    sprite3.position.y = (15 * Math.sin(Date.now()* 0.0006)) +12;
+    globalSphere5.position.y = (-15 * Math.sin(Date.now()* 0.0006)) + 25;
+    sprite4.position.y = (-15 * Math.sin(Date.now()* 0.0006)) +12;
+   
+
+   globalSphere2.material.opacity +=  subtractedVal;
+   globalSphere4.material.opacity +=  subtractedVal;
+   sprite1.material.opacity += subtractedVal * 2;
+   sprite2.material.opacity += subtractedVal * 2;
+   sprite3.material.opacity += subtractedVal * 2;
+   
+   sprite4.material.opacity += subtractedVal * 2;
+   if(sphere1.material.opacity < 0){
+     scene.remove(sphere1);
+   };
+
+   
+   globalSphere5.material.opacity +=  subtractedVal;
+   subtractedVal += 0.000001;
+   globalSphere3.position.x = spherePos;
+   globalSphere3.position.y += -0.25
+   
+   globalSphere3.scale.x += 0.01;
+   globalSphere3.scale.y += 0.01;
+   globalSphere3.scale.z += 0.01;
+
+   spherePos = spherePos - 0.5;
+   controls.update();
+
+  } else {
+    state.current_page = "videoTransition2";
+    scene.remove(sphere1);
+    scene.remove(globalSphere2);
+    scene.remove(globalSphere4);
+    scene.remove(globalSphere5);
+
+  }
+}
+
+
+var videoTransition2 = function(){
+  if(state.current_page === "videoTransition2"){
+    requestAnimationFrame( videoTransition2 );
+    render();       
+    updateVideoTransition2();
+  } else{
+    false;
+};
+};
+
+
+
+
+var initVideo = function(){
+  $('#content').html("<iframe class='vine-embed' src='https://vine.co/v/haXQeXAUqj1/embed/simple' frameborder='0' height= '320' width= '320'/>");
+
+  setTimeout(function(){
+    $('#content').animate({ opacity: 1 }, 2000 );
+    startVine();
+  }, 200)
+}
+
+var updateVideoTransition2 = function(){
+  globalSphere3.rotation.y +=  1 * Math.PI / 200;
+  
+
+
+
+
+  controls.update();
+
+
+}
 
 
 

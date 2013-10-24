@@ -20,6 +20,8 @@
 //= require fullscreen.js
 //= require keyboard.js
 //= require window.js
+//= require lightbox-2.6.min.js
 //= requrie tween.min.js
+//= require vine.js
 
 //= require_tree .
