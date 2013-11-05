@@ -10,7 +10,86 @@
 %h1.name
   [ michael morrissey ]
 
+
+#info
+  %div
+    %a{href:"mailto:mikehmorrissey@gmail.com"}
+      email
+  %div
+    = link_to "/assets/Michael-Morrissey-Resume2.0.pdf", :target => "_blank" do
+      resume
+  %div
+    = link_to "http://lunarmayor.tumblr.com/", :target => "_blank" do
+      tumblr
+  %div
+    = link_to "https://soundcloud.com/mikehmorrissey", :target => "_blank" do
+      soundcloud
+  %div
+    = link_to "https://github.com/mikehmorrissey", :target => "_blank" do
+      github
+    
+
 #content
 %h2.name
   [ web developer ]
+
+
+
+
+#me{style: "display: none"}
+  #about-me
+    %div
+      = image_tag "websitepicture.png"
+    %div.about-me-text
+      Hello, I'm a full stack web developer and digital artist. 
+      %br
+      %br
+      I love the internet
+
+
+#video{style: "display: none"}
+  - @videos.each do |video|
+    %div
+      %iframe(class="vine-embed" src="https://vine.co/v/#{video}/embed/simple" frameborder="0" height= "480" width= "480")
+
+
+#web{style: "display:none"}
+  .row
+    = link_to "http://flatterbook.com/", :target => "_blank" do
+      = image_tag "flatterbook-thumbnail.png", class: "web-thumbnail"
+    = link_to "http://lunarmayor.com/", :target => "_blank" do
+      = image_tag "lunarmayordotcom.png", class: "web-thumbnail"
+    = link_to "http://desolate-crag-6716.herokuapp.com", :target => "_blank" do
+      = image_tag "pixelsortpreview.png", class: "web-thumbnail"
+  
+
+#images{style: "display:none"}
+  %a{href: asset_path('gallery9.jpg'), :"data-lightbox" => 'gallery'}
+    = image_tag 'gallery9.jpg'
+  %a{href: asset_path('gallery4.jpg'), :"data-lightbox" => 'gallery'}
+    = image_tag 'gallery4.jpg'
+  %a{href: asset_path('gallery10.png'), :"data-lightbox" => 'gallery'}
+    = image_tag 'gallery10.png'
+  %a{href: asset_path('gallery11.jpeg'), :"data-lightbox" => 'gallery'}
+    = image_tag 'gallery11.jpeg'
+  %a{href: asset_path('gallery13.jpeg'), :"data-lightbox" => 'gallery'}
+    = image_tag 'gallery13.jpeg'
+  %a{href: asset_path('gallery7.jpg'), :"data-lightbox" => 'gallery'}
+    = image_tag 'gallery7.jpg'
+  %br
+  %a{href: asset_path('halloween.jpg'), :"data-lightbox" => 'gallery'}
+    = image_tag 'halloween.jpg'
+  %a{href: asset_path('gear.jpg'), :"data-lightbox" => 'gallery'}
+    = image_tag 'gear.jpg'
+  %a{href: asset_path('pixels.gif'), :"data-lightbox" => 'gallery'}
+    = image_tag 'pixels.gif'
+  %a{href: asset_path('cube3.gif'), :"data-lightbox" => 'gallery'}
+    = image_tag 'cube3.gif'
+
+
+  
+   
+  
+<script async src="//platform.vine.co/static/scripts/embed.js" charset="utf-8"></script>
+
 

@@ -356,12 +356,6 @@ $(document).ready(function(){
 
 });
 
-$(document).ready(function(){
-  $('.about-me').on("click", function(){
-    
-  });
-
-});
 
 
 //
@@ -373,7 +367,7 @@ $(document).ready(function(){
     $( ".web").off();
     $(".about-me").off();
     $(".video").off();
-
+    rebindNav();
     $('h2').text("[ images ]");
 
     imagesTransition();
@@ -429,11 +423,11 @@ var updateImagesTransition = function(){
    globalSphere5.material.opacity +=  subtractedVal;
    subtractedVal += 0.000001;
    globalSphere4.position.z = spherePos;
-   globalSphere4.position.y += -0.2
+   globalSphere4.position.y += -0.3;
    
-   globalSphere4.scale.x += 0.01;
-   globalSphere4.scale.y += 0.01;
-   globalSphere4.scale.z += 0.01;
+   globalSphere4.scale.x += 0.009;
+   globalSphere4.scale.y += 0.009;
+   globalSphere4.scale.z += 0.009;
 
    spherePos = spherePos - 0.5;
    controls.update();
@@ -463,18 +457,16 @@ var imagesTransition2 = function(){
 
 
 var initImages = function(){
-  $('#content').html("<a href='/assets/gallery9.jpg' data-lightbox = 'gallery'><img src= '/assets/gallery9.jpg'/></a><a href='/assets/gallery4.jpg' data-lightbox = 'gallery'><img src= '/assets/gallery4.jpg'/></a><a href='/assets/gallery10.png' data-lightbox = 'gallery'><img src= '/assets/gallery10.png' /></a><a href='/assets/gallery11.jpeg' data-lightbox = 'gallery'><img src= '/assets/gallery11.jpeg' /></a><a href='/assets/gallery13.jpeg' data-lightbox = 'gallery'><img src= '/assets/gallery13.jpeg'/></a><a href='/assets/gallery7.jpg' data-lightbox = 'gallery'><img src= '/assets/gallery7.jpg'/></a>");
+  $('#content').html($('#images').html());
   setTimeout(function(){$('#content').animate({ opacity: 1 }, 2000 );
   }, 200)
 }
 
 var updateImagesTransition2 = function(){
   globalSphere4.rotation.y +=  1 * Math.PI / 200;
-  
-
-
-
-
+  if(globalSphere4.position.y > -50){
+    globalSphere4.position.y += -0.4
+  } 
   controls.update();
 
 
@@ -492,7 +484,7 @@ $(document).ready(function(){
     $( ".web").off();
     $(".about-me").off();
     $(".video").off();
-
+    rebindNav();
     $('h2').text("[ video ]");
 
     videoTransition();
@@ -526,7 +518,7 @@ var updateVideoTransition = function(){
     sphere1.position.y = 20 + 10 * Math.cos(Date.now()* 0.0005);
     globalSphere2.position.y = (15 * Math.sin(Date.now()* 0.0006)) + 25;
     sprite1.position.y = (15 * Math.sin(Date.now()* 0.0006))+ 12;
-    globalSphere4.position.y = (-15 * Math.sin(Date.now()* 0.0006)) +25;
+    globalSphere4.position.y = (15 * Math.sin(Date.now()* 0.0006)) +25;
     sprite2.position.y = (-15 * Math.sin(Date.now()* 0.0006)) +12;
     sprite3.position.y = (15 * Math.sin(Date.now()* 0.0006)) +12;
     globalSphere5.position.y = (-15 * Math.sin(Date.now()* 0.0006)) + 25;
@@ -582,15 +574,17 @@ var videoTransition2 = function(){
 
 
 var initVideo = function(){
-  $('#content').html("<iframe class='vine-embed' src='https://vine.co/v/haXQeXAUqj1/embed/simple' frameborder='0' height= '320' width= '320'/>");
+  $('#content').html($('#video').html());
 
   setTimeout(function(){
     $('#content').animate({ opacity: 1 }, 2000 );
-    startVine();
   }, 200)
 }
 
 var updateVideoTransition2 = function(){
+  if(globalSphere3.position.y > -50){
+    globalSphere3.position.y += -0.4
+  } 
   globalSphere3.rotation.y +=  1 * Math.PI / 200;
   
 
@@ -602,5 +596,299 @@ var updateVideoTransition2 = function(){
 
 }
 
+//me
+
+
+
+$(document).ready(function(){
+  $('.about-me').on("click", function(){
+    state.current_page = "meTransition"
+    $( ".images" ).off();
+    $( ".web").off();
+    $(".about-me").off();
+    $(".video").off();
+    rebindNav();
+    $('h2').text("[ me ]");
+
+    meTransition();
+    
+  })
+})
+
+
+var meTransition = function(){
+  if(state.current_page === "meTransition"){
+    requestAnimationFrame( meTransition );
+    render();       
+    updateMeTransition();
+  } else{
+    initMe();
+    meTransition2();
+
+  };
+
+
+};
+
+var alternateSpherePos = -100;
+
+
+
+var updateMeTransition = function(){
+  if ((sprite1.material.opacity > 0) || (alternateSpherePos < 0)){
+    camera.position.x = 300 * Math.sin(Date.now()* 0.0003);
+    camera.position.z = 300 * Math.cos(Date.now()* 0.0003);
+    sphere1.position.y = 20 + 10 * Math.cos(Date.now()* 0.0005);
+    globalSphere2.position.y = (15 * Math.sin(Date.now()* 0.0006)) + 25;
+    sprite1.position.y = (15 * Math.sin(Date.now()* 0.0006))+ 12;
+    globalSphere4.position.y = (15 * Math.sin(Date.now()* 0.0006)) +25;
+    sprite2.position.y = (-15 * Math.sin(Date.now()* 0.0006)) +12;
+    sprite3.position.y = (15 * Math.sin(Date.now()* 0.0006)) +12;
+    globalSphere3.position.y = (-15 * Math.sin(Date.now()* 0.0006)) + 25;
+    sprite4.position.y = (-15 * Math.sin(Date.now()* 0.0006)) +12;
+   
+
+   globalSphere2.material.opacity +=  subtractedVal;
+   globalSphere4.material.opacity +=   subtractedVal;
+   sprite1.material.opacity +=  subtractedVal * 2;
+   sprite2.material.opacity += subtractedVal * 2;
+   sprite3.material.opacity += subtractedVal * 2;
+   
+   sprite4.material.opacity += subtractedVal * 2;
+   if(sphere1.material.opacity < 0){
+     scene.remove(sphere1);
+   };
+
+   
+   globalSphere3.material.opacity +=  subtractedVal;
+   subtractedVal += 0.000001;
+   globalSphere5.position.z = alternateSpherePos;
+   globalSphere5.position.y += -0.25
+   
+   globalSphere5.scale.x += 0.01;
+   globalSphere5.scale.y += 0.01;
+   globalSphere5.scale.z += 0.01;
+
+   alternateSpherePos = alternateSpherePos + 0.5;
+   controls.update();
+
+  } else {
+    state.current_page = "meTransition2";
+    scene.remove(sphere1);
+    scene.remove(globalSphere2);
+    scene.remove(globalSphere4);
+    scene.remove(globalSphere3);
+
+  }
+}
+
+
+var meTransition2 = function(){
+  if(state.current_page === "meTransition2"){
+    requestAnimationFrame( meTransition2 );
+    render();       
+    updateMeTransition2();
+  } else{
+    false;
+};
+};
+
+
+
+
+var initMe = function(){
+  $('#content').html($('#me').html());
+
+  setTimeout(function(){
+    $('#content').animate({ opacity: 1 }, 2000 );
+    $('#info').animate({right: "0", opacity: 1}, 2000);
+  }, 200)
+}
+
+var updateMeTransition2 = function(){
+  if(globalSphere5.position.y > -50){
+    globalSphere5.position.y += -0.4
+  } 
+  globalSphere5.rotation.y +=  1 * Math.PI / 200;
+  
+
+
+
+
+  controls.update();
+
+
+}
+
+
+
+
+//web
+
+
+
+$(document).ready(function(){
+  $('.web').on("click", function(){
+    state.current_page = "webTransition"
+    $( ".images" ).off();
+    $( ".web").off();
+    $(".about-me").off();
+    $(".video").off();
+    rebindNav();
+    $('h2').text("[ web ]");
+
+    webTransition();
+    
+  })
+})
+
+
+var webTransition = function(){
+  if(state.current_page === "webTransition"){
+    requestAnimationFrame( webTransition );
+    render();       
+    updateWebTransition();
+  } else{
+    initWeb();
+    webTransition2();
+
+  };
+
+
+};
+
+var alternateSpherePos = -100;
+
+
+
+var updateWebTransition = function(){
+  if ((sprite1.material.opacity > 0) || (alternateSpherePos < 0)){
+    camera.position.x = 300 * Math.sin(Date.now()* 0.0003);
+    camera.position.z = 300 * Math.cos(Date.now()* 0.0003);
+    sphere1.position.y = 20 + 10 * Math.cos(Date.now()* 0.0005);
+    globalSphere5.position.y = (-15 * Math.sin(Date.now()* 0.0006)) + 25;
+    sprite1.position.y = (15 * Math.sin(Date.now()* 0.0006))+ 12;
+    globalSphere4.position.y = (15 * Math.sin(Date.now()* 0.0006)) +25;
+    sprite2.position.y = (-15 * Math.sin(Date.now()* 0.0006)) +12;
+    sprite3.position.y = (15 * Math.sin(Date.now()* 0.0006)) +12;
+    globalSphere3.position.y = (-15 * Math.sin(Date.now()* 0.0006)) + 25;
+    sprite4.position.y = (-15 * Math.sin(Date.now()* 0.0006)) +12;
+   
+
+   globalSphere5.material.opacity +=  subtractedVal;
+   globalSphere4.material.opacity +=   subtractedVal;
+   sprite1.material.opacity +=  subtractedVal * 2;
+   sprite2.material.opacity += subtractedVal * 2;
+   sprite3.material.opacity += subtractedVal * 2;
+   
+   sprite4.material.opacity += subtractedVal * 2;
+   if(sphere1.material.opacity < 0){
+     scene.remove(sphere1);
+   };
+
+   
+   globalSphere3.material.opacity +=  subtractedVal;
+   subtractedVal += 0.000001;
+   globalSphere2.position.x = alternateSpherePos;
+   globalSphere2.position.y += -0.25
+   
+   globalSphere2.scale.x += 0.01;
+   globalSphere2.scale.y += 0.01;
+   globalSphere2.scale.z += 0.01;
+
+   alternateSpherePos = alternateSpherePos + 0.5;
+   controls.update();
+
+  } else {
+    state.current_page = "webTransition2";
+    scene.remove(sphere1);
+    scene.remove(globalSphere5);
+    scene.remove(globalSphere4);
+    scene.remove(globalSphere3);
+
+  }
+}
+
+
+var webTransition2 = function(){
+  if(state.current_page === "webTransition2"){
+    requestAnimationFrame( webTransition2 );
+    render();       
+    updateWebTransition2();
+  } else{
+    false;
+};
+};
+
+
+
+
+var initWeb = function(){
+  $('#content').html($('#web').html());
+
+  setTimeout(function(){
+    $('#content').animate({ opacity: 1 }, 2500 );
+  }, 200)
+  
+  
+  //$('h1').animate({ opacity: 0 }, 2000 );
+  
+
+}
+
+var updateWebTransition2 = function(){
+  if(globalSphere2.position.y > -50){
+    globalSphere2.position.y += -0.4
+  } 
+  
+  globalSphere2.rotation.y +=  1 * Math.PI / 200;
+  
+
+
+
+
+  controls.update();
+
+
+}
+
+
+var rebindNav = function(){
+  $('.about-me').on("click", function(){
+    $('#content').animate({opacity: 0}, 2000, function(){
+      $("#content").html($('#me').html());
+      $('h2').text("[ me ]");
+      $('#info').animate({right: "0", opacity: 1}, 2000);
+      $('#content').animate({opacity: 1}, 2000);
+    })
+  })
+
+  $('.web').on("click", function(){
+    $('#content').animate({opacity: 0}, 2000, function(){
+      $("#content").html($('#web').html());
+      $('h2').text("[ web ]");
+      $('#info').animate({right: "-400", opacity: 0}, 2000);
+      $('#content').animate({opacity: 1}, 2000);
+    })
+  })
+
+   $('.images').on("click", function(){
+    $('#content').animate({opacity: 0}, 2000, function(){
+      $("#content").html($('#images').html());
+      $('h2').text("[ images ]");
+      $('#info').animate({right: "-400", opacity: 0}, 2000);
+      $('#content').animate({opacity: 1}, 2000);
+    })
+  })
+
+  $('.video').on("click", function(){
+    $('#content').animate({opacity: 0}, 2000, function(){
+      $("#content").html($('#video').html());
+      $('h2').text("[ video ]");
+      $('#info').animate({right: "+=-400", opacity: 0}, 2000);
+      $('#content').animate({opacity: 1}, 2000);
+    })
+  })
+}
 
 
